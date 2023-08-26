@@ -2,7 +2,7 @@ name: Update Bio
 on: 
   push:
     branches:
-      - "master"
+      - "main"
     paths: 
       - 'index.js'
       - 'about.md'

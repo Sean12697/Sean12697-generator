@@ -19,9 +19,10 @@ async function main() {
 
 function appendValuesToMdFile(obj, fileName, newFileName) {
     if (newFileName == undefined) newFileName = fileName;
-    let additionalText = "\n" + Object.keys(obj).map(key => `[${key}]: ${obj[key]}`).join("\n");
-    let fileContent = fs.readFileSync(fileName, "utf8") + additionalText;
-    fs.writeFileSync(newFileName, fileContent);
+    let fileContent = fs.readFileSync(fileName, "utf8");
+    Object.keys(obj).map(key => {
+        fileContent = fileContent.replace(key, obj[key]);
+    }); fs.writeFileSync(newFileName, fileContent);
 }
 
 async function getPolyworksCollectionHightCount(user, collectionId) {
