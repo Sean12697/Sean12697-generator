@@ -1,0 +1,58 @@
+name: Update Bio
+on: 
+  push:
+    branches:
+      - "master"
+    paths: 
+      - 'index.js'
+      - 'about.md'
+  schedule:
+    # Run at 6AM daily
+    - cron: '0 6 * * *'
+
+env:
+  GIT_PAT: ${{ secrets.GIT_PAT }}
+  GIT_USER: ${{ secrets.GIT_USER }}
+  GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
+  SOURCE_REPO: Sean12697/Sean12697-generator
+  SOURCE_REPO_FOLDER: Sean12697-generator
+  TARGET_REPO: Sean12697/Sean12697
+  TARGET_REPO_FOLDER: Sean12697
+
+jobs:
+  anonymize-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull Code
+        uses: actions/checkout@v2
+        with:
+          path: ${{ env.SOURCE_REPO_FOLDER }}
+      - name: Configure Git for Private Repo
+        run: |
+          cd ${{ github.workspace }}/${{ env.SOURCE_REPO_FOLDER }}
+          git config user.name ${{ env.GIT_USER }}
+          git config user.email ${{ env.GIT_EMAIL }}
+      - name: Generate Bio
+        run: |
+          cd ${{ github.workspace }}/${{ env.SOURCE_REPO_FOLDER }}
+          touch .env
+          echo UNTAPPD_CLIENT_ID=${{ secrets.UNTAPPD_CLIENT_ID }} >> .env
+          echo UNTAPPD_CLIENT_SECRET=${{ secrets.UNTAPPD_CLIENT_SECRET }} >> .env
+          npm i && npm run index.js && cd ${{ github.workspace }}
+      - name: Pull Target Code
+        run: |
+          git clone https://${{ env.GIT_USER }}:${{ env.GIT_PAT }}@github.com/${{ env.TARGET_REPO }} ${{ github.workspace }}/${{ env.TARGET_REPO_FOLDER }}
+      - name: Configure Git for Target Repo
+        run: |
+          cd ${{ github.workspace }}/${{ env.TARGET_REPO_FOLDER }}
+          git config user.name ${{ env.GIT_USER }}
+          git config user.email ${{ env.GIT_EMAIL }}
+      - name: Clone Bio
+        run: |
+          cp ${{ github.workspace }}/${{ env.SOURCE_REPO_FOLDER }}/render.md ${{ github.workspace }}/${{ env.TARGET_REPO_FOLDER }}/README.md
+      - name: Commit & Push to Target Repo
+        run: |
+          cd ${{ github.workspace }}/${{ env.TARGET_REPO_FOLDER }}
+          git add .
+          git commit -m "Pulled New Bio"
+          git push --set-upstream https://${{ env.GIT_USER }}:${{ env.GIT_PAT }}@github.com/${{ env.TARGET_REPO }}

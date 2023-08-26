@@ -8,7 +8,7 @@ main();
 async function main() {
     let beerFestivals = await getPolyworksCollectionHightCount("sean12697", "1081961");
     let hackathons = await getPolyworksCollectionHightCount("sean12697", "1081458");
-    let untappdProfileData = await asyncGetRequest(`https://api.untappd.com/v4/user/info/CraftBeerSean?client_id=${process.env.untappd_client_id}&client_secret=${process.env.untappd_client_secret}`, {});
+    let untappdProfileData = await asyncGetRequest(`https://api.untappd.com/v4/user/info/CraftBeerSean?client_id=${process.env.UNTAPPD_CLIENT_ID}&client_secret=${process.env.UNTAPPD_CLIENT_SECRET}`, {});
 
     appendValuesToMdFile({ 
         beer_festivals_val: beerFestivals,
