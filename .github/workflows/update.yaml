@@ -8,8 +8,8 @@ on:
       - 'about.md'
       - '.github/workflows/main.yml'
   schedule:
-    # Run at 6AM daily
-    - cron: '0 6 * * *'
+    # Run at 7AM daily
+    - cron: '0 7 * * *'
 
 env:
   GIT_PAT: ${{ secrets.GIT_PAT }}
