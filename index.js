@@ -13,7 +13,7 @@ async function main() {
     appendValuesToMdFile({ 
         beer_festivals_val: beerFestivals,
         hackathons_val: hackathons,
-        beer_checkins_ref: JSON.parse(untappdProfileData).response.user.stats.total_checkins
+        beer_checkins_val: JSON.parse(untappdProfileData).response.user.stats.total_checkins
     }, "about.md", "render.md");
 }
 
