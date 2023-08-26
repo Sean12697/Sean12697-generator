@@ -6,6 +6,7 @@ on:
     paths: 
       - 'index.js'
       - 'about.md'
+      - '.github/workflows/main.yml'
   schedule:
     # Run at 6AM daily
     - cron: '0 6 * * *'
