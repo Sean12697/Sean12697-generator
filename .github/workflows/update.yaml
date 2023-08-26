@@ -40,7 +40,7 @@ jobs:
           touch .env
           echo UNTAPPD_CLIENT_ID=${{ secrets.UNTAPPD_CLIENT_ID }} >> .env
           echo UNTAPPD_CLIENT_SECRET=${{ secrets.UNTAPPD_CLIENT_SECRET }} >> .env
-          npm i && npm index.js && cd ${{ github.workspace }}
+          npm i && node index.js && cd ${{ github.workspace }}
       - name: Pull Target Code
         run: |
           git clone https://${{ env.GIT_USER }}:${{ env.GIT_PAT }}@github.com/${{ env.TARGET_REPO }} ${{ github.workspace }}/${{ env.TARGET_REPO_FOLDER }}
