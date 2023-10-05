@@ -6,8 +6,8 @@ const fs = require("fs");
 main();
 
 async function main() {
-    let beerFestivals = 27; // await getPolyworksCollectionHightCount("sean12697", "1081961");
-    let hackathons = 16; // await getPolyworksCollectionHightCount("sean12697", "1081458");
+    let beerFestivals = 16; // await getPolyworksCollectionHightCount("sean12697", "1081961");
+    let hackathons = 27; // await getPolyworksCollectionHightCount("sean12697", "1081458");
     let untappdProfileData = await asyncGetRequest(`https://api.untappd.com/v4/user/info/CraftBeerSean?client_id=${process.env.UNTAPPD_CLIENT_ID}&client_secret=${process.env.UNTAPPD_CLIENT_SECRET}`, {});
     let date_time_now = (new Date()).toTimeString();
 
