@@ -67,6 +67,7 @@
 
 - 📧 Professional: sean@inevitableteam.com
 - 📧 CAMRA (Greater Manchester's Regional Young Members Coordinator): ym@greatermanchester.camra.org.uk
+- 📧 CAMRA (Central Manchester Branch Chair): chair@centralmanchester.camra.org.uk
 - 📧 Personal: seanomahoney@protonmail.com
 
 
