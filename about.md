@@ -8,6 +8,10 @@
 - 🎪 Involved in {{beerFestivals}} Beer Festivals ([Portfolio Collection](https://seanomahoney.com/timeline/collection/beer-festivals))
 - 🍻 Checked in {{beerCheckins}} Unique Beers, Ciders and Perry's on [Untappd](https://untappd.com/user/sean12697)
 
+### Recently Played Games
+
+{{ steamMd }}
+
 ### Primary Technologies (to be enhanced)
 
 - IaaS / Cloud: AWS...
