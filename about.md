@@ -4,9 +4,9 @@
 
 - 🚀 Co-founder of [INEVITABLE](https://inevitableinnovations.com/), an award-winning AI startup in Manchester
 - 🤝 Attended ~400 Networking Events in the Manchester Tech Scene, inspiring [CompiledMCR](https://compiledmcr.com/)
-- 💡 Involved in {{hackathons_val}} [Hackathons](https://hackathon.guide/) ([Portfolio Collection](https://seanomahoney.com/timeline/collection/hackathons)): Co-Organized, Judged, Mentored, Volunteered, and Attended
-- 🎪 Involved in {{beer_festivals_val}} Beer Festivals ([Portfolio Collection](https://seanomahoney.com/timeline/collection/beer-festivals))
-- 🍻 Checked in {{beer_checkins_val}} Unique Beers, Ciders and Perry's on [Untappd](https://untappd.com/user/sean12697)
+- 💡 Involved in {{hackathons}} [Hackathons](https://hackathon.guide/) ([Portfolio Collection](https://seanomahoney.com/timeline/collection/hackathons)): Co-Organized, Judged, Mentored, Volunteered, and Attended
+- 🎪 Involved in {{beerFestivals}} Beer Festivals ([Portfolio Collection](https://seanomahoney.com/timeline/collection/beer-festivals))
+- 🍻 Checked in {{beerCheckins}} Unique Beers, Ciders and Perry's on [Untappd](https://untappd.com/user/sean12697)
 
 ### Primary Technologies (to be enhanced)
 
