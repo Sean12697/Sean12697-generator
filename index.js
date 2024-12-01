@@ -2,29 +2,25 @@ require('dotenv').config();
 const request = require('request');
 const cheerio = require('cheerio');
 const fs = require("fs");
+const mustache = require('mustache');
 
 main();
 
 async function main() {
+    let template = fs.readFileSync("about.md", "utf8");
     let beerFestivals = await getPortfolioCollectionHightCount("beer-festivals");
     let hackathons = await getPortfolioCollectionHightCount("hackathons");
     let untappdProfileData = await asyncGetRequest(`https://api.untappd.com/v4/user/info/CraftBeerSean?client_id=${process.env.UNTAPPD_CLIENT_ID}&client_secret=${process.env.UNTAPPD_CLIENT_SECRET}`, {});
     let date_time_now = (new Date()).toUTCString();
 
-    appendValuesToMdFile({ 
+    let renderedOutput = mustache.render(template, { 
         beer_festivals_val: beerFestivals,
         hackathons_val: hackathons,
         beer_checkins_val: JSON.parse(untappdProfileData).response.user.stats.total_beers,
         date_time_now
-    }, "about.md", "render.md");
-}
+    });
 
-function appendValuesToMdFile(obj, fileName, newFileName) {
-    if (newFileName == undefined) newFileName = fileName;
-    let fileContent = fs.readFileSync(fileName, "utf8");
-    Object.keys(obj).map(key => {
-        fileContent = fileContent.replace(key, obj[key]);
-    }); fs.writeFileSync(newFileName, fileContent);
+    fs.writeFileSync("render.md", renderedOutput, 'utf8');
 }
 
 async function getPortfolioCollectionHightCount(collectionName) {
