@@ -40,6 +40,7 @@ jobs:
           touch .env
           echo UNTAPPD_CLIENT_ID=${{ secrets.UNTAPPD_CLIENT_ID }} >> .env
           echo UNTAPPD_CLIENT_SECRET=${{ secrets.UNTAPPD_CLIENT_SECRET }} >> .env
+          echo STEAM_API_KEY=${{ secrets.STEAM_API_KEY }} >> .env
           npm i && node index.js && cd ${{ github.workspace }}
       - name: Pull Target Code
         run: |
