@@ -12,12 +12,10 @@ const isAdultOnly = async (appID) => {
 
     if (data[appID]?.success) {
       const descriptors = data[appID].data?.content_descriptors?.ids || [];
-      console.log(descriptors)
       return descriptors.includes(3); // Assuming ID 3 corresponds to adult-only
     }
     return false;
   } catch (error) {
-    // console.error(`Error checking adult status for appID ${appID}:`, error.message);
     return false; // Assume not adult-only on error
   }
 };
@@ -47,8 +45,8 @@ const fetchGames = async (playerID, apiKey) => {
       const playtimeHours = (game.playtime_forever / 60).toFixed(2); // Convert minutes to hours
       const playtimeMinutes = game.playtime_forever; // Total minutes
 
-      return `- ![${game.name}](${iconURL}) **${game.name}** ${isNewlyPlayed ? "(Newly Played!)" : ""}  
-        - **Playtime**: ${playtimeMinutes} minutes (${playtimeHours} hours)`;
+      return `- ![${game.name}](${iconURL}) **[${game.name}](https://store.steampowered.com/app/${game.appid}})** ${isNewlyPlayed ? "(Newly Played!)" : ""}  
+        - **Playtime**: ${playtimeMinutes} minutes (${playtimeHours} hours)\n`;
     });
 
     // Write Markdown to file

@@ -13,7 +13,7 @@ async function main() {
 
     let portfolioData = await getPortfolio();
     let untappdData = await getUntappdData(process.env.UNTAPPD_CLIENT_ID, process.env.UNTAPPD_CLIENT_SECRET);
-    let steamData = await fetchGames("76561198101964519", "394AAA0A8E2A204C0EDF4F199738A483");
+    let steamData = await fetchGames("76561198101964519", process.env.STEAM_API_KEY);
     
     let date_time_now = (new Date()).toUTCString();
 
