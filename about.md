@@ -63,9 +63,11 @@
 
 #### Social Media
 
-- 🐦 Twitter: [https://twitter.com/Sean12697](https://twitter.com/Sean12697)
+- ☁️ BlueSky: [https://bsky.app/profile/seanomahoney.com](https://bsky.app/profile/seanomahoney.com)
+- 📷 Instagram: [https://www.instagram.com/craftbeersean/](https://www.instagram.com/craftbeersean/)
 - 💼 LinkedIn: [https://www.linkedin.com/in/sean12697/](https://www.linkedin.com/in/sean12697/)
 - ✍️ Portfolio: [https://seanomahoney.com/](https://seanomahoney.com/) ([RSS Feed](https://seanomahoney.com/rss.xml))
+- 🐦 Twitter: [https://twitter.com/Sean12697](https://twitter.com/Sean12697)
 
 #### Email Addresses
 
