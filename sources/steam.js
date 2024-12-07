@@ -2,7 +2,7 @@ import asyncGetRequest from './std.js';
 
 const API_URL = "https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v1/";
 const STORE_API_URL = "https://store.steampowered.com/api/appdetails";
-const ACHIEVEMENTS_API_URL = "https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/";
+const ACHIEVEMENTS_API_URL = "http://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v0002/";
 
 // Helper function to check if a game is adult-only
 const isAdultOnly = async (appID) => {
@@ -22,42 +22,28 @@ const isAdultOnly = async (appID) => {
   }
 };
 
-// Helper function to format achievement data
-const formatAchievement = (achievement) => {
-  const icon = achievement.icon || achievement.icongray; // Use icon if available
-  if (!icon) {
-    return null; // Skip achievements with no valid icon
-  }
+const formatAchievementIcon = (achievement) => {
+  return `![${achievement.displayName}](${achievement.icon})`;
+}
 
-  const name = achievement.displayName || formatApiName(achievement.apiname); // Use displayName or format apiname
-  return `![${name}](${icon}) ${name}`;
-};
-
-// Helper function to format API names into readable strings
-const formatApiName = (apiname) => {
-  return apiname
-    .replace(/_/g, " ") // Replace underscores with spaces
-    .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize each word
-};
-
-// Fetch player achievements for a specific game
-const fetchAchievements = async (playerID, apiKey, appID) => {
-  try {
-    const url = `${ACHIEVEMENTS_API_URL}?key=${apiKey}&steamid=${playerID}&appid=${appID}`;
-    const response = await asyncGetRequest(url);
-    const data = JSON.parse(response);
-
-    if (data?.playerstats?.achievements) {
-      const unlockedAchievements = data.playerstats.achievements
-        .filter((ach) => ach.achieved) // Only include unlocked achievements
-        .map(formatAchievement)
+const achievementIcons = async (unlockedAchievements) => {
+  unlockedAchievements = unlockedAchievements
+        .map(formatAchievementIcon)
         .filter(Boolean); // Remove null values from invalid icons
 
       return unlockedAchievements.length
         ? unlockedAchievements.join(" ")
         : "No achievements unlocked";
-    }
-    return "No achievements unlocked";
+}
+
+// Fetch player achievements for a specific game
+const fetchAchievements = async (apiKey, appID) => {
+  try {
+    const url = `${ACHIEVEMENTS_API_URL}?key=${apiKey}&appid=${appID}&l=english&format=json`;
+    const response = await asyncGetRequest(url);
+    const data = JSON.parse(response);
+      // return achievementIcons(data?.game.availableGameStats.achievements); // Discrepancy in Icon Size
+      return `${data?.game.availableGameStats.achievements.length} achievements unlocked`;
   } catch (error) {
     console.error(`Error fetching achievements for appID ${appID}:`, error.message);
     return "Error fetching achievements";
@@ -89,11 +75,11 @@ const fetchGames = async (playerID, apiKey) => {
         const playtimeMinutes = game.playtime_forever; // Total minutes
 
         // Fetch achievements for the game
-        // const achievements = await fetchAchievements(playerID, apiKey, game.appid);
+        const achievements = await fetchAchievements(apiKey, game.appid);
 
         return `![${game.name}](${iconURL}) **[${game.name}](https://store.steampowered.com/app/${game.appid})** ${isNewlyPlayed ? "(Newly Played!)" : ""}  
-          - **Playtime**: ${playtimeMinutes} minutes (${playtimeHours} hours)`;
-          // - **Achievements**: ${achievements}`;
+          - **Playtime**: ${playtimeMinutes} minutes (${playtimeHours} hours)
+          - **Achievements**: ${achievements}`;
       })
     );
 
