@@ -3,6 +3,7 @@ import asyncGetRequest from './std.js';
 const API_URL = "https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v1/";
 const STORE_API_URL = "https://store.steampowered.com/api/appdetails";
 const ACHIEVEMENTS_API_URL = "http://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v0002/";
+const PLAYER_ACHIEVEMENTS_API_URL = "https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/";
 
 // Helper function to check if a game is adult-only
 const isAdultOnly = async (appID) => {
@@ -37,18 +38,23 @@ const achievementIcons = async (unlockedAchievements) => {
 }
 
 // Fetch player achievements for a specific game
-const fetchAchievements = async (apiKey, appID) => {
+const fetchAchievements = async (apiKey, playerID, appID) => {
   try {
-    const url = `${ACHIEVEMENTS_API_URL}?key=${apiKey}&appid=${appID}&l=english&format=json`;
+    const url = `${PLAYER_ACHIEVEMENTS_API_URL}?key=${apiKey}&steamid=${playerID}&appid=${appID}&l=english`;
     const response = await asyncGetRequest(url);
     const data = JSON.parse(response);
-      // return achievementIcons(data?.game.availableGameStats.achievements); // Discrepancy in Icon Size
-      return `${data?.game.availableGameStats.achievements.length} achievements unlocked`;
+
+    const unlocked = data?.playerstats?.achievements?.filter(a => a.achieved) || [];
+
+    return unlocked.length 
+      ? await achievementIcons(unlocked) 
+      : "No achievements unlocked";
   } catch (error) {
-    console.error(`Error fetching achievements for appID ${appID}:`, error.message);
+    console.error(`Error fetching unlocked achievements for appID ${appID}:`, error.message);
     return "Error fetching achievements";
   }
 };
+
 
 // Fetch player games and achievements
 const fetchGames = async (playerID, apiKey) => {
@@ -75,7 +81,7 @@ const fetchGames = async (playerID, apiKey) => {
         const playtimeMinutes = game.playtime_forever; // Total minutes
 
         // Fetch achievements for the game
-        const achievements = await fetchAchievements(apiKey, game.appid);
+        const achievements = await fetchAchievements(apiKey, playerID, game.appid);
 
         return `![${game.name}](${iconURL}) **[${game.name}](https://store.steampowered.com/app/${game.appid})** ${isNewlyPlayed ? "(Newly Played!)" : ""}  
           - **Playtime**: ${playtimeMinutes} minutes (${playtimeHours} hours)
