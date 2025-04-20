@@ -38,20 +38,32 @@ const achievementIcons = async (unlockedAchievements) => {
 }
 
 // Fetch player achievements for a specific game
-const fetchAchievements = async (apiKey, playerID, appID) => {
+const fetchGameAchievements = async (apiKey, appID) => {
+  try {
+    const url = `${ACHIEVEMENTS_API_URL}?key=${apiKey}&appid=${appID}&l=english&format=json`;
+    const response = await asyncGetRequest(url);
+    const data = JSON.parse(response);
+      // return achievementIcons(data?.game.availableGameStats.achievements); // Discrepancy in Icon Size
+      console.log(data?.game)
+      if (Object.keys(data?.game).length === 0) return 0;
+      return data?.game.availableGameStats.achievements.length;
+  } catch (error) {
+    console.error(`Error fetching achievements for appID ${appID}:`, error.message);
+    return 0;
+  }
+};
+
+// Fetch player achievements for a specific game
+const fetchAchievementsUnlocked = async (apiKey, playerID, appID) => {
   try {
     const url = `${PLAYER_ACHIEVEMENTS_API_URL}?key=${apiKey}&steamid=${playerID}&appid=${appID}&l=english`;
     const response = await asyncGetRequest(url);
     const data = JSON.parse(response);
-
     const unlocked = data?.playerstats?.achievements?.filter(a => a.achieved) || [];
-
-    return unlocked.length 
-      ? await achievementIcons(unlocked) 
-      : "No achievements unlocked";
+    return unlocked.length || 0;
   } catch (error) {
     console.error(`Error fetching unlocked achievements for appID ${appID}:`, error.message);
-    return "Error fetching achievements";
+    return 0;
   }
 };
 
@@ -81,11 +93,12 @@ const fetchGames = async (playerID, apiKey) => {
         const playtimeMinutes = game.playtime_forever; // Total minutes
 
         // Fetch achievements for the game
-        const achievements = await fetchAchievements(apiKey, playerID, game.appid);
+        const totalAchievements = await fetchGameAchievements(apiKey, game.appid);
+        const unlockedAchievements = await fetchAchievementsUnlocked(apiKey, playerID, game.appid);
 
         return `![${game.name}](${iconURL}) **[${game.name}](https://store.steampowered.com/app/${game.appid})** ${isNewlyPlayed ? "(Newly Played!)" : ""}  
           - **Playtime**: ${playtimeMinutes} minutes (${playtimeHours} hours)
-          - **Achievements**: ${achievements}`;
+          - **Achievements**: ${unlockedAchievements} / ${totalAchievements}`;
       })
     );
 
